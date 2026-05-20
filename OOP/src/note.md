@@ -1,6 +1,6 @@
 Kotlin
 
-internal is an access modifier, that allow us can only use our code in its module, if different module we won't abled to use it.
+internal is an access modifier, that allow us can only use our code in its module, if different module we won't able to use it.
 
 Ex.
 
@@ -15,10 +15,10 @@ Ex.
     }
 
 --> we can only use this class inside our module.
---> module is where we coding our code and store that file. like src folder when we first create kotlin project (that src folder we call module).
+--> module is where we're coding our code and store that file. like src folder when we first create kotlin project (that src folder we call module).
 
---> to create new module, we can right click on our project name then choose new->module->set name->choose system building-> finish.
---> to able accessing the class from other module we need to add dependency.
+--> to create new module, we can right-click on our project name then choose new->module->set name->choose system building-> finish.
+--> to be able accessing the class from other module we need to add dependency.
 
 
 singleton object:
@@ -68,3 +68,39 @@ However, data class also can have some method inside its body.
             return hashAccNum
         }
     }
+--> Overloading operator: In Kotlin, operator overloading means giving special behavior to operators like:
+
+-->* remember: overloading operator fun must be named the same as operator (plus, minus, times, div, equals ...)
+
+    +  -  *  /  ==  []  ++
+Ex.
+
+    data class Point(val x: Int, val y: Int) {
+        operator fun plus(other: Point): Point {
+            return Point(x + other.x, y + other.y)
+        }
+    }
+
+There are some available overloading operator
+
+    | Operator   | Converted To  |
+    | ---------- | ------------- |
+    | `a + b`    | `a.plus(b)`   |
+    | `a - b`    | `a.minus(b)`  |
+    | `a * b`    | `a.times(b)`  |
+    | `a / b`    | `a.div(b)`    |
+    | `a == b`   | `a.equals(b)` |
+    | `a[i]`     | `a.get(i)`    |
+    | `a[i] = x` | `a.set(i, x)` |
+
+Copy is a build in function of data class. It copies reference from other data class object and assign to a new object. We also can modify all the properties that we just copied.
+
+    val transaction3 = transaction2.copy(accountNo = "3872974") // for any property that didn't modify, keep the same.
+
+Destructuring use to separate properties of data class object.
+
+    val (accountNumber, amount, accountDestination) = transaction1  //full destructuring
+
+    val (_, amount, accountDestination) = transaction1 // partial destructuring: mean that we just use _ to fill the order of a property that we dont want.
+
+Remember: the properties inside val () must be ordered to the properties inside data class object.
