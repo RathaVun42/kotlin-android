@@ -104,3 +104,58 @@ Destructuring use to separate properties of data class object.
     val (_, amount, accountDestination) = transaction1 // partial destructuring: mean that we just use _ to fill the order of a property that we dont want.
 
 Remember: the properties inside val () must be ordered to the properties inside data class object.
+
+Extension function: Kotlin extensions let you extend a class or an interface with new functionality without using inheritance or design patterns.
+
+We use extension function when:
+    
+    You cannot modify the original class
+    You want cleaner utility functions
+    You want to add helper behavior
+
+How to make extension function: 
+    
+    fun ClassName.extensionFuncName(){
+        --code---
+    }
+Remember: extension function doesn't belong to class it just class extends, so it cannot use any protected or private property. It doesn't recommend for polymorphism, because it doesn't follow polymorphism runtime, and it follows reference type.
+It cannot be overridden.
+
+    | Feature                 | Member Function | Extension Function |
+    | ----------------------- | --------------- | ------------------ |
+    | Inherited               | Yes             | Not really         |
+    | Overridable             | Yes             | No                 |
+    | Runtime polymorphism    | Yes             | No                 |
+    | Based on runtime object | Yes             | No                 |
+    | Based on reference type | No              | Yes                |
+
+Base on reference type like what?
+    
+    open class Animal
+    class Dog : Animal()
+    
+    fun Animal.sound() = println("Animal sound")
+    fun Dog.sound() = println("Dog sound")
+    
+    val a: Animal = Dog()
+    a.sound()
+    
+    Output:
+    
+    Animal sound // it's not dog sound because extension function follows to reference type, and referenc type of a is Animal.
+                 // this calls base on reference type.
+
+We can use extension function with any class.
+Remember: if we make extension function for any class, only that class member that can use that extension function.
+
+We also can have extension property, extension companion object too.
+
+    val Example.fullName: String
+        get() = "$firstName $lastName"
+
+    var Example.age: Int
+        get() = num
+        set(value) {
+        num = value
+        }
+Remember: extension property never store value itself. Like we can see even thought we can set new value, that value is assigned to num that is class member.
