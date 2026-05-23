@@ -1,8 +1,9 @@
 package classes
 
 import java.sql.Timestamp
-import java.util.stream.IntStream.range
-import kotlin.text.split
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 enum class Currency{
     RIEL,USD
@@ -14,7 +15,7 @@ data class BankAccount(
     val isFreezed: Boolean,
     val accountType: String,
     val currency: Currency,
-    val createdDate: Timestamp? = Timestamp(System.currentTimeMillis()),
+    val createdDate: Timestamp = Timestamp(System.currentTimeMillis()),
 ){
     fun ShowAccountNumber(): String {
         //val hashAccNum = "****${accountNumber.takeLast(4)}"
@@ -46,6 +47,13 @@ fun BankAccount.formattedAccNo(): String {
     }
     return "${accNo.take(4)}-${accNo.substring(4,8)}-${accNo.takeLast(4)}"
 }
+
+fun Timestamp.formatedDate(): String {
+    val datetimeformater = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy")
+    //val date = createdDate.toLocalDateTime().format(datetimeformater)
+    val date = Instant.ofEpochMilli(this.time).atZone(ZoneId.systemDefault()).format(datetimeformater)
+    return date.toString()
+}
 fun main() {
     val acc = BankAccount(
         accountNumber = "098768788832",
@@ -71,4 +79,5 @@ fun main() {
     }
 
     println(acc1.balance.formatter() + " " + acc1.ShowCurrency())
+    println(acc1.createdDate.formatedDate())
 }

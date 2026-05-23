@@ -149,6 +149,15 @@ We can use extension function with any class.
 Remember: if we make extension function for any class, only that class member that can use that extension function.
 
 We also can have extension property, extension companion object too.
+    
+    fun ClassName.companion.funName(): return type{
+        --code--
+    }
+    val ClassName.companion.propertyName get() = classProperty
+    var ClassName.companion.propertyName get() = classProperty
+        set(value) = {
+            classProperty = value
+        }
 
     val Example.fullName: String
         get() = "$firstName $lastName"
@@ -159,3 +168,5 @@ We also can have extension property, extension companion object too.
         num = value
         }
 Remember: extension property never store value itself. Like we can see even thought we can set new value, that value is assigned to num that is class member.
+
+Extension as member: Normally we create Extension at top level of project, but we also allow you to create Extension property ot function in side other class, but it can only be accessed by the class and subclass itself.
