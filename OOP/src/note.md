@@ -170,3 +170,80 @@ We also can have extension property, extension companion object too.
 Remember: extension property never store value itself. Like we can see even thought we can set new value, that value is assigned to num that is class member.
 
 Extension as member: Normally we create Extension at top level of project, but we also allow you to create Extension property ot function in side other class, but it can only be accessed by the class and subclass itself.
+
+Delegation: use to reduce too much action of extending that also can cause so many override methods. With delegation helps us automatically generate those implemented-function. We also can override some implemented-function if needed. And also can have own behavior.
+
+    interface Singer{
+        fun sing()
+    }
+    interface Dance{
+        fun dance()
+    }
+    class HumanSinger() : Singer {
+        override fun sing() {
+        println("Human Singer is singing")
+        }
+    }
+    class AiSinger() : Singer {
+        override fun sing() {
+            println("AiSinger is singing")
+        }
+    }
+    class HumanDance() : Dance {
+        override fun dance() {
+            println("Human Dance is dancing")
+        }
+    }
+    
+    class AiDance() : Dance {
+        override fun dance() {
+            println("AiDance is dancing")
+        }
+    }
+    
+    class PlaySong(
+        private val singer: Singer,
+        private val dance: Dance
+    ): Singer by singer   //object inside constructor and type of implementation must be the same.
+    ,Dance by dance   // delegation also can implement many interface at once.
+    {
+        override fun sing() {  // we also can override those implemented-function
+            println("PlaySong is playing")
+        }
+        fun play() {   // also can have own behavior
+            println("PlaySong is playing")
+        }
+    }
+    fun main() {
+        val humanSinger = HumanSinger()
+        val aiSinger = AiSinger()
+        val humanDance = HumanDance()
+        val aiDance = AiDance()
+        val playSong = PlaySong(humanSinger, aiDance)
+        playSong.dance()
+        playSong.sing()
+        playSong.play()
+    }
+Another important point is that we can pass the object of different class with the same implementation to our delegation.It will automatically understand whether which object's ability is come from which obj.
+
+Object: there are two type of object, declaration obj, and expression obj.
+Declaration Obj: is an obj that has name. we create once and reusable anywhere. About expression obj it doesn't have name and is created when needed, mean created one used once.
+It is also famous with interface because it can override all of interfaces implementation. We also can store it in a property.
+
+    Product.addProduct(
+        ProductModel("P011", "Blueberry", 6.0),
+        result = object : ProductReq {  //this is expression obj that implement from interface
+        override fun onSuccess(response: ProductModel, code: Int) {
+            println("Product added successfully\nCode: ${response.ProductId}\nProductName: ${response.ProductName} \nPrice: ${response.Price} \n")
+        }
+
+        override fun onFailure(message: String, code: Int) {
+            println("Error: $message")
+        }
+
+        override fun onError(message: String, code: Int) {
+            println("Error: $message")
+        }
+    })
+
+Expression also can be used to handle result like lambda function.
