@@ -247,3 +247,55 @@ It is also famous with interface because it can override all of interfaces imple
     })
 
 Expression also can be used to handle result like lambda function.
+* Generic type: we use generic type to expect that our property can be changed its data type.
+ 
+    
+    data class ApiResponse<T>(
+        val success: Boolean,
+        val message: String,
+        val data: T
+    )
+    Usage
+    val apiResponse = ApiResponse<List<Product>>(
+        true, "Success", Product("P09", "Fruit", 12.0)
+    ) // so data now become to List<Product>
+
+Sealed class: it acts like an enum class. However, it is more powerful. It can be inherited and hold different data.
+
+    sealed class ApiResponse(){
+        open fun showMessage(message:String){
+            println(message)
+        }
+        data class Success(
+            val data: Data,
+            val message: String,
+        ) : ApiResponse(){
+            fun showData(){
+                println(data.name)
+                println(data.age)
+            }
+        }
+        data class Error(
+            val message: String,
+        ): ApiResponse(){
+    
+        }
+        object Loading: ApiResponse()
+    }
+    fun apiResult(result: ApiResponse){
+        when(result){
+            is ApiResponse.Success -> {
+                result.showMessage(result.message)
+                result.showData()
+            }
+            is ApiResponse.Error -> {
+                result.showMessage(result.message)
+            }
+            is ApiResponse.Loading -> {
+                println("Loading...")
+            }
+        }
+    } // like you can see here, we don't need default value for when expression because it knows that for any result type ApiResponse exactly has only three member and doesn't have any else value.
+
+Sealed class can be inherited outside its class. But we can inherit it inside it, mean we declare our subclass inside it. Subclass also can have it own property and behavior. That makes it powerful that Enum class.
+We also can use sealed class to handle our result during api request.
